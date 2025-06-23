@@ -88,7 +88,7 @@ export const CreateMFEForm = () => {
           inputs: {
             product_name: repositoryName,
             product_display_name: productName,
-            repository_visibility: 'public',
+            repository_visibility: 'private',
             github_token: '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'
           }
         })
