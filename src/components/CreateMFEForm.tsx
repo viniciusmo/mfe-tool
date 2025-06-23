@@ -50,7 +50,7 @@ export const CreateMFEForm = () => {
       full_name: `mfepocautomation/${repositoryName}`,
       html_url: repoUrl,
       description: `Portal for ${currentProductName}`,
-      private: true,
+      private: false,
       created_at: new Date().toISOString()
     };
     setCreatedRepository(repo);
