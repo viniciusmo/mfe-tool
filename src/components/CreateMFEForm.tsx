@@ -9,6 +9,7 @@ import { GitBranch, Package, Settings, CheckCircle, Clock, AlertCircle, External
 
 const templates = [
   { id: "portal", name: "Portal", description: "Portal template for micro frontend applications" },
+  { id: "backoffice", name: "Backoffice", description: "Backoffice template for administrative interfaces" },
 ];
 
 type WorkflowStatus = 'idle' | 'triggered' | 'completed';
@@ -36,20 +37,21 @@ export const CreateMFEForm = () => {
   const loadingSteps = [
     "Triggering workflow...",
     "Creating repository structure...",
-    "Setting up Portal template...",
+    `Setting up ${selectedTemplate === 'backoffice' ? 'Backoffice' : 'Portal'} template...`,
     "Configuring micro frontend...",
     "Finalizing setup...",
-    "Your Portal MFE is ready!"
+    `Your ${selectedTemplate === 'backoffice' ? 'Backoffice' : 'Portal'} MFE is ready!`
   ];
 
   const fetchCreatedRepository = async (repositoryName: string) => {
     // Create the repository URL directly without API call
     const repoUrl = `https://github.com/mfepocautomation/${repositoryName}`;
+    const templateName = selectedTemplate === 'backoffice' ? 'Backoffice' : 'Portal';
     const repo: CreatedRepository = {
       name: repositoryName,
       full_name: `mfepocautomation/${repositoryName}`,
       html_url: repoUrl,
-      description: `Portal for ${currentProductName}`,
+      description: `${templateName} for ${currentProductName}`,
       private: false,
       created_at: new Date().toISOString()
     };
@@ -117,9 +119,10 @@ export const CreateMFEForm = () => {
           setWorkflowStatus('completed');
           setLoadingStep(6);
           fetchCreatedRepository(repositoryName);
+          const templateName = selectedTemplate === 'backoffice' ? 'Backoffice' : 'Portal';
           toast({
-            title: "Portal MFE Created Successfully!",
-            description: `Your Portal MFE "${productName}" has been created and is ready to use.`,
+            title: `${templateName} MFE Created Successfully!`,
+            description: `Your ${templateName} MFE "${productName}" has been created and is ready to use.`,
           });
         }, 20000);
         
@@ -164,11 +167,12 @@ export const CreateMFEForm = () => {
   };
 
   const getStatusText = () => {
+    const templateName = selectedTemplate === 'backoffice' ? 'Backoffice' : 'Portal';
     switch (workflowStatus) {
       case 'triggered':
-        return `Creating your Portal MFE "${currentProductName}"...`;
+        return `Creating your ${templateName} MFE "${currentProductName}"...`;
       case 'completed':
-        return 'Your Portal MFE is ready!';
+        return `Your ${templateName} MFE is ready!`;
       default:
         return '';
     }
@@ -271,7 +275,7 @@ export const CreateMFEForm = () => {
           <CardHeader className="bg-slate-50 border-b border-slate-200">
             <CardTitle className="flex items-center space-x-2">
               {getStatusIcon()}
-              <span>Creating Your Portal MFE</span>
+              <span>Creating Your {selectedTemplate === 'backoffice' ? 'Backoffice' : 'Portal'} MFE</span>
             </CardTitle>
             <CardDescription>
               {getStatusText()}
